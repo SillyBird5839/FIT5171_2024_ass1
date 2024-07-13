@@ -1,34 +1,80 @@
-
-
 import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.Set;
 
 public class FlightCollection {
-	
-	public static ArrayList<Flight> flights;
 
-	public static ArrayList<Flight> getFlights() {
-		return flights;
-	}
+    public static ArrayList<Flight> flights = new ArrayList<>();
+    private static final Set<String> VALID_CITIES = new HashSet<>();
 
-	public static void addFlights(ArrayList<Flight> flights) {
-		FlightCollection.flights.addAll(flights);
-	}
-	
-	public static Flight getFlightInfo(String city1, String city2) {
-    	//display the flights where there is a direct flight from city 1 to city2
-    	return null;
+
+    public static ArrayList<Flight> getFlights() {
+        return flights;
     }
-    
+
+    static {
+        // 初始化有效城市列表
+        VALID_CITIES.add("New York");
+        VALID_CITIES.add("London");
+        VALID_CITIES.add("Sydney");
+        VALID_CITIES.add("Tokyo");
+        VALID_CITIES.add("Paris");
+        VALID_CITIES.add("Berlin");
+        VALID_CITIES.add("Shanghai");
+        VALID_CITIES.add("Beijing");
+        VALID_CITIES.add("Los Angeles");
+        VALID_CITIES.add("Moscow");
+        VALID_CITIES.add("Melbourne");
+    }
+
+    public static void addFlights(ArrayList<Flight> newFlights) {
+        if (newFlights == null) {
+            throw new IllegalArgumentException("Cannot add null list of flights.");
+        }
+        for (Flight flight : newFlights) {
+            if (isValidFlight(flight)) {
+                flights.add(flight);
+            } else {
+                throw new IllegalArgumentException("Invalid flight data.");
+            }
+        }
+    }
+
+    private static boolean isValidFlight(Flight flight) {
+        return flight != null && isValidCity(flight.getDepartTo()) && isValidCity(flight.getDepartFrom());
+    }
+
+    private static boolean isValidCity(String city) {
+        return VALID_CITIES.contains(city);
+    }
+
+    public static Flight getFlightInfo(String cityto, String cityfrom) {
+        for (Flight flight : flights) {
+            if (flight.getDepartTo().equalsIgnoreCase(cityto) && flight.getDepartFrom().equalsIgnoreCase(cityfrom) ) {
+                return flight;
+            }
+        }
+        return null;
+    }
+
     public static Flight getFlightInfo(String city) {
-    	//SELECT a flight where depart_to = city
-    	return null;
-
+        for (Flight flight : flights) {
+            if (flight.getDepartTo().equalsIgnoreCase(city) || flight.getDepartFrom().equalsIgnoreCase(city)) {
+                return flight;
+            }
+        }
+        return null;
     }
+
     public static Flight getFlightInfo(int flight_id) {
-    	//SELECT a flight with a particular flight id
-    	return null;
-
+        for (Flight flight : flights) {
+            if (flight.getFlightID() == flight_id) {
+                return flight;
+            }
+        }
+        return null;
     }
-    
+
+
 
 }

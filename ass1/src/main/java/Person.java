@@ -1,18 +1,23 @@
+import java.util.Set;
 
-public abstract class Person //abstract class Person
+public class Person //abstract class Person
 {
     private String firstName;
     private String secondName;
     private int age;
     private String gender;
 
-    public Person(){}
+    // ydai 0035 sets used to check gender
+    private static final Set<String> validGenders = Set.of("Woman", "Man", "Non-binary | gender diverse", "Prefer not to say", "Other");
+
+//    public Person(){}
 
     public Person(String firstName, String secondName, int age, String gender){
-        this.age=age;
-        this.firstName=firstName;
-        this.secondName=secondName;
-        this.gender=gender;
+        // ydai0035 use set functions to replace the original recording methods
+        setFirstName(firstName);
+        setSecondName(secondName);
+        setAge(age);
+        setGender(gender);
     }
 
     public int getAge() {
@@ -20,7 +25,11 @@ public abstract class Person //abstract class Person
     }
 
     public void setAge(int age) {
-        this.age = age;
+        if (age >= 0 && age <= 150) {  // 假定150岁为合理的最大年龄
+            this.age = age;
+        } else {
+            throw new IllegalArgumentException("Age must be between 0 and 150.");
+        }
     }
 
     public String getGender() {
@@ -28,7 +37,11 @@ public abstract class Person //abstract class Person
     }
 
     public void setGender(String gender) {
-        this.gender = gender;
+        if (validGenders.contains(gender)) {
+            this.gender = gender;
+        } else {
+            throw new IllegalArgumentException("Invalid gender provided. Choose from 'Woman', 'Man', 'Non-binary | gender diverse', 'Prefer not to say', 'Other'.");
+        }
     }
 
     public String getFirstName() {
@@ -40,21 +53,34 @@ public abstract class Person //abstract class Person
     }
 
     public void setFirstName(String firstName) {
-        this.firstName = firstName;
+        if (isValidName(firstName)) {
+            this.firstName = firstName;
+        } else {
+            throw new IllegalArgumentException("First name must start with a letter and only contain alphabet characters.");
+        }
     }
 
     public void setSecondName(String secondName) {
-        this.secondName = secondName;
+        if (isValidName(secondName)) {
+            this.secondName = secondName;
+        } else {
+            throw new IllegalArgumentException("Second name must start with a letter and only contain alphabet characters.");
+        }
+    }
+
+    private boolean isValidName(String name) {
+        return name != null && !name.isEmpty() && Character.isLetter(name.charAt(0)) && name.matches("[a-zA-Z]+");
     }
 
     @Override
     public String toString()
     {
+        // ydai0035 change the form of output and the methods to get the information
         return "Person{" +
-                "firstName='" + firstName + '\'' +
-                ", secondName='" + secondName + '\'' +
-                ", age=" + age +
-                ", gender='" + gender + '\'' +
+                "firstName='" + getFirstName() + '\'' +
+                ", secondName='" + getSecondName() + '\'' +
+                ", age=" + getAge() +
+                ", gender='" + getGender() + '\'' +
                 '}';
     }
 }
