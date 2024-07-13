@@ -1,7 +1,9 @@
-
-
 import java.sql.Timestamp;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Date;
 
 public class Flight {
     private int flightID;
@@ -12,19 +14,20 @@ public class Flight {
     private Timestamp dateFrom;
     private Timestamp dateTo;
     Airplane airplane;
-    
-    public Flight(){}
+
+//    public Flight(){}
 
     public Flight(int flight_id, String departTo, String departFrom, String code, String company, Timestamp dateFrom,Timestamp dateTo, Airplane airplane)
     {
-            this.flightID=flight_id;
-            this.departTo = departTo;
-            this.departFrom = departFrom;
-            this.code = code;
-            this.company = company;
-            this.airplane = airplane;
-            this.dateTo = dateTo;
-            this.dateFrom = dateFrom;
+        setFlightID(flight_id);
+        setDepartTo(departTo);
+        setDepartFrom(departFrom);
+        setCode(code);
+        setCompany(company);
+        setDateFrom(dateFrom);
+        setDateTo(dateTo);
+        setAirplane(airplane);
+        checkFlightUniqueness();
     }
 
     public int getFlightID() {
@@ -32,7 +35,12 @@ public class Flight {
     }
 
     public void setFlightID(int flightid) {
-        this.flightID = flightid;
+        // ydai0035 validate flightID larger than 0
+        if (flightid > 0) {
+            this.flightID = flightid;
+        } else {
+            throw new IllegalArgumentException("Flight ID must be positive.");
+        }
     }
 
     public String getDepartTo() {
@@ -40,7 +48,12 @@ public class Flight {
     }
 
     public void setDepartTo(String departTo) {
-        this.departTo = departTo;
+        // ydai0035 validate DepartTo not empty
+        if (departTo != null && !departTo.trim().isEmpty()) {
+            this.departTo = departTo;
+        } else {
+            throw new IllegalArgumentException("Departure to location cannot be empty.");
+        }
     }
 
     public String getDepartFrom() {
@@ -48,7 +61,12 @@ public class Flight {
     }
 
     public void setDepartFrom(String departFrom) {
-        this.departFrom = departFrom;
+        // ydai0035 validate DepartFrom not empty
+        if (departFrom != null && !departFrom.trim().isEmpty()) {
+            this.departFrom = departFrom;
+        } else {
+            throw new IllegalArgumentException("Departure from location cannot be empty.");
+        }
     }
 
     public String getCode() {
@@ -56,7 +74,12 @@ public class Flight {
     }
 
     public void setCode(String code) {
-        this.code = code;
+        // ydai0035 validate Code not empty
+        if (code != null && !code.trim().isEmpty()) {
+            this.code = code;
+        } else {
+            throw new IllegalArgumentException("Flight code cannot be empty.");
+        }
     }
 
     public String getCompany() {
@@ -64,7 +87,12 @@ public class Flight {
     }
 
     public void setCompany(String company) {
-        this.company = company;
+        // ydai0035 validate company not empty
+        if (company != null && !company.trim().isEmpty()) {
+            this.company = company;
+        } else {
+            throw new IllegalArgumentException("Company cannot be empty.");
+        }
     }
 
     public Timestamp getDateFrom() {
@@ -72,18 +100,43 @@ public class Flight {
     }
 
     public void setDateFrom(Timestamp dateFrom) {
-        this.dateFrom = dateFrom;
+        if (dateFrom == null) {
+            throw new IllegalArgumentException("Departure date cannot be null.");
+        }
+        SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yy HH:mm:ss");
+        sdf.setLenient(false); // 设置为严格的日期解析，不符合格式将抛出异常
+        try {
+            String formattedDate = sdf.format(dateFrom); // 将 Timestamp 格式化为字符串
+            Date parsedDate = sdf.parse(formattedDate); // 尝试解析回 Date，检查格式一致性
+            this.dateFrom = new Timestamp(parsedDate.getTime()); // 如果没有抛出异常，设置 this.dateTo
+        } catch (ParseException e) {
+            throw new IllegalArgumentException("Arrival date format must be 'DD/MM/YY HH:MM:SS'.");
+        }
     }
 
     public Timestamp getDateTo() {
         return dateTo;
     }
 
-    public void setDateTo(Timestamp dateTo) {
-        this.dateTo = dateTo;
-    }
 
+    public void setDateTo(Timestamp dateTo) {
+        if (dateTo == null) {
+            throw new IllegalArgumentException("Arrival date cannot be null.");
+        }
+        SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yy HH:mm:ss");
+        sdf.setLenient(false); // 设置为严格的日期解析，不符合格式将抛出异常
+        try {
+            String formattedDate = sdf.format(dateTo); // 将 Timestamp 格式化为字符串
+            Date parsedDate = sdf.parse(formattedDate); // 尝试解析回 Date，检查格式一致性
+            this.dateTo = new Timestamp(parsedDate.getTime()); // 如果没有抛出异常，设置 this.dateTo
+        } catch (ParseException e) {
+            throw new IllegalArgumentException("Arrival date format must be 'DD/MM/YY HH:MM:SS'.");
+        }
+    }
     public void setAirplane(Airplane airplane) {
+        if (airplane == null) {
+            throw new IllegalArgumentException("Airplane cannot be null.");
+        }
         this.airplane = airplane;
     }
 
@@ -91,16 +144,27 @@ public class Flight {
         return airplane;
     }
 
+    private void checkFlightUniqueness() {
+        for (Flight flight : FlightCollection.getFlights()) {
+            if (flight.getFlightID() == this.getFlightID() ||
+                    (flight.getDepartFrom().equalsIgnoreCase(this.getDepartFrom()) &&
+                            flight.getDepartTo().equalsIgnoreCase(this.getDepartTo()) &&
+                            flight.getDateFrom().equals(this.getDateFrom()) &&
+                            flight.getDateTo().equals(this.getDateTo()))) {
+                throw new IllegalStateException("A flight with the same details already exists in the system.");
+            }
+        }
+    }
+
     public String toString()
     {
-            return "Flight{" + airplane.toString() +
-                    ", date to=" +  getDateTo() + ", " + '\'' +
-                    ", date from='" + getDateFrom() + '\'' +
-                    ", depart from='" + getDepartFrom() + '\'' +
-                    ", depart to='" + getDepartTo() + '\'' +
-                    ", code=" + getCode() + '\'' +
-                    ", company=" + getCompany() + '\'' +
-                    ", code=" + getCode() + '\'' +
-                    '}';
+        return "Flight{" + "airplane=" + getAirplane().toString() +
+                ", date to='" +  getDateTo() + "', " +
+                "date from='" + getDateFrom() + "', " +
+                "depart from='" + getDepartFrom() + "', " +
+                "depart to='" + getDepartTo() + "', " +
+                "code='" + getCode() + "', " +
+                "company='" + getCompany() + "'" +
+                '}';
     }
 }
