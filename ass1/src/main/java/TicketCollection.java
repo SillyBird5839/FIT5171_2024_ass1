@@ -1,7 +1,7 @@
 import java.util.ArrayList;
 
 public class TicketCollection {
-    // ydai0035 extende code for the requirements
+    // ydai0035 extend code for the requirements
     public static ArrayList<Ticket> tickets = new ArrayList<>();
 
     public static ArrayList<Ticket> getTickets() {
