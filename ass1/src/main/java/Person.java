@@ -12,7 +12,7 @@ public class Person //abstract class Person
 
     //    public Person(){}
     public Person(String firstName, String secondName, Integer age, String gender){
-        // ydai0035 use set functions to replace the original recording methods
+        // hwan0262 use set functions to replace the original recording methods
         setFirstName(firstName);
         setSecondName(secondName);
         setAge(age);
@@ -78,7 +78,7 @@ public class Person //abstract class Person
     @Override
     public String toString()
     {
-        // ydai0035 change the form of output and the methods to get the information
+        // hwan0262 change the form of output and the methods to get the information
         return "Person{" +
                 "firstName='" + getFirstName() + '\'' +
                 ", secondName='" + getSecondName() + '\'' +
