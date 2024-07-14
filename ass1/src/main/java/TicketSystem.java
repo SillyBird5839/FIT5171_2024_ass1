@@ -3,7 +3,7 @@ import java.util.regex.Pattern;
 
 public class TicketSystem {
     Scanner in;
-
+    // ydai0035 mix TicketChoose and TicketBuy, and extend code for the requirements
     public TicketSystem() {
         this.in = new Scanner(System.in);
     }
