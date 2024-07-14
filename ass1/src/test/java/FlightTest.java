@@ -22,12 +22,6 @@ class FlightTest {
         dateFrom = new Timestamp(sdf.parse("15/10/23 12:00:00").getTime());
         dateTo = new Timestamp(sdf.parse("15/10/23 15:00:00").getTime());
         airplane = new Airplane(1, "Boeing 747", 12, 150, 10);
-        // 使用反射清空 FlightCollection 中的 flights 列表
-//        Field flightsField = FlightCollection.class.getDeclaredField("flights");
-//        flightsField.setAccessible(true);
-//        flightsField.set(null, new ArrayList<Flight>());
-
-        // clear the collection
         FlightCollection.getFlights().clear();
 
         flight = new Flight(1, "Sydney", "Melbourne", "QF400", "Qantas", dateFrom, dateTo, airplane);
@@ -47,12 +41,16 @@ class FlightTest {
         );
     }
 
+    // All fields are required
     @Test
     @DisplayName("Invalid Flight ID")
     void testInvalidFlightID() {
-        Exception exception = assertThrows(IllegalArgumentException.class, () -> new Flight(0, "Sydney", "Melbourne", "QF400", "Qantas", dateFrom, dateTo, airplane));
-        assertTrue(exception.getMessage().contains("Flight ID must be positive"));
+        Exception exception = assertThrows(IllegalArgumentException.class, () -> new Flight(null, "Sydney", "Melbourne", "QF400", "Qantas", dateFrom, dateTo, airplane));
+        assertTrue(exception.getMessage().contains("Flight id cannot be null"));
+        Exception exception1 = assertThrows(IllegalArgumentException.class, () -> new Flight(0, "Sydney", "Melbourne", "QF400", "Qantas", dateFrom, dateTo, airplane));
+        assertTrue(exception1.getMessage().contains("Flight ID must be positive"));
     }
+
 
     @Test
     @DisplayName("Invalid Departure Location")
@@ -68,15 +66,6 @@ class FlightTest {
         assertTrue(exception.getMessage().contains("Departure from location cannot be empty"));
     }
 
-    @Test
-    @DisplayName("Invalid Date Format")
-    void testInvalidDateFormat() {
-        Exception exception = assertThrows(IllegalArgumentException.class, () -> {
-            Timestamp wrongDate = new Timestamp(new SimpleDateFormat("yyyy/MM/dd HH:mm:ss").parse("2023/10/15 12:00:00").getTime());
-            new Flight(1, "Sydney", "Melbourne", "QF400", "Qantas", wrongDate, dateTo, airplane);
-        });
-        assertTrue(exception.getMessage().contains("Departure date format must be 'DD/MM/YY HH:MM:SS'"));
-    }
 
     @Test
     @DisplayName("Null Airplane Object")
@@ -87,6 +76,26 @@ class FlightTest {
         assertTrue(exception.getMessage().contains("Airplane cannot be null"));
     }
 
+    @Test
+    @DisplayName("Null Code Object")
+    void testNullCodeObject() {
+        Exception exception = assertThrows(IllegalArgumentException.class, () -> {
+            new Flight(1, "Sydney", "Melbourne", "", "Qantas", dateFrom, dateTo, null);
+        });
+        assertTrue(exception.getMessage().contains("Flight code cannot be empty"));
+    }
+
+    @Test
+    @DisplayName("Null Company Object")
+    void testNullCompanyObject() {
+        Exception exception = assertThrows(IllegalArgumentException.class, () -> {
+            new Flight(1, "Sydney", "Melbourne", "QF400", "", dateFrom, dateTo, null);
+        });
+        assertTrue(exception.getMessage().contains("Company cannot be empty"));
+    }
+
+
+    // Ensure the same flight is not already in the system
     @Test
     @DisplayName("Check Flight Uniqueness")
     void testFlightUniqueness() throws Exception {
@@ -101,6 +110,20 @@ class FlightTest {
         assertTrue(exception.getMessage().contains("A flight with the same details already exists in the system."));
     }
 
+    //2. Date must be in DD/MM/YY format.
+    //3. Time must be in HH:MM:SS format.
+    @Test
+    @DisplayName("Invalid Date Format")
+    void testInvalidDateFormat() {
+        Exception exception = assertThrows(IllegalArgumentException.class, () -> {
+            Timestamp wrongDate = new Timestamp(new SimpleDateFormat("yyyy/MM/dd HH:mm:ss").parse("2023/10/15 12:00:00").getTime());
+            new Flight(1, "Sydney", "Melbourne", "QF400", "Qantas", wrongDate, dateTo, airplane);
+        });
+        assertTrue(exception.getMessage().contains("Departure date format must be 'DD/MM/YY HH:MM:SS'"));
+    }
+
+
+    // other tests
     @Test
     @DisplayName("Test toString Output")
     void testToStringOutput() {

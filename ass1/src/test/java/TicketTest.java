@@ -36,6 +36,8 @@ class TicketTest {
         ticket = new Ticket(1, 1000, flight, false, passenger);
     }
 
+
+    // Values for the ticket status must be ‘True’ or ‘False’ for the booked and available tickets respectively
     @Test
     @DisplayName("Valid Ticket Creation")
     void testValidTicketCreation() {
@@ -44,39 +46,22 @@ class TicketTest {
                 () -> assertEquals(1120, ticket.getPrice()),
                 () -> assertEquals(flight, ticket.getFlight()),
                 () -> assertEquals(passenger, ticket.getPassenger()),
-                () -> assertFalse(ticket.ticketStatus()),
+                () -> assertFalse(ticket.ticketStatus()),   // When a ticket is created, its status is set to false by default
                 () -> assertFalse(ticket.getClassVip())
         );
     }
 
     @Test
-    @DisplayName("Invalid Ticket ID")
-    void testInvalidTicketID() {
-        Exception exception = assertThrows(IllegalArgumentException.class, () -> new Ticket(0, 1000, flight, false, passenger));
-        assertTrue(exception.getMessage().contains("Ticket ID must be positive."));
+    @DisplayName("Ticket Status True or False")     // Only by this method, can the status of a ticket been changed
+    void testTicketStatus() {
+        ticket.setTicketStatus(true);
+        assertTrue(ticket.ticketStatus());
+        ticket.setTicketStatus(false);
+        assertFalse(ticket.ticketStatus());
     }
 
-    @Test
-    @DisplayName("Invalid Ticket Price")
-    void testInvalidTicketPrice() {
-        Exception exception = assertThrows(IllegalArgumentException.class, () -> new Ticket(1, 0, flight, false, passenger));
-        assertTrue(exception.getMessage().contains("Price must be positive."));
-    }
 
-    @Test
-    @DisplayName("Invalid Flight")
-    void testInvalidFlight() {
-        Exception exception = assertThrows(IllegalArgumentException.class, () -> new Ticket(1, 1000, null, false, passenger));
-        assertTrue(exception.getMessage().contains("Flight cannot be null."));
-    }
-
-    @Test
-    @DisplayName("Invalid Passenger")
-    void testInvalidPassenger() {
-        Exception exception = assertThrows(IllegalArgumentException.class, () -> new Ticket(1, 1000, flight, false, null));
-        assertTrue(exception.getMessage().contains("Passenger cannot be null."));
-    }
-
+    // Discount is always applied based on the age category of the passenger
     @Test
     @DisplayName("Discount for Age Below 15")
     void testDiscountForAgeBelow15() {
@@ -93,6 +78,20 @@ class TicketTest {
         assertEquals(0, ticket.getPrice()); // 100% discount
     }
 
+
+    // Price is always applied to a ticket
+    // The price and service tax are valid values (integer or real numbers etc.)
+    @Test
+    @DisplayName("Invalid Ticket Price")
+    void testInvalidTicketPrice() {
+        Exception exception = assertThrows(IllegalArgumentException.class, () -> new Ticket(1, 0, flight, false, passenger));
+        assertTrue(exception.getMessage().contains("Price must be positive."));
+        Exception exception1 = assertThrows(IllegalArgumentException.class, () -> new Ticket(1, null, flight, false, passenger));
+        assertTrue(exception1.getMessage().contains("Price cannot be null."));
+    }
+
+
+    // The service tax is always applied when a ticket is sold.
     @Test
     @DisplayName("Service Tax Application")
     void testServiceTaxApplication() {
@@ -101,14 +100,31 @@ class TicketTest {
         assertEquals(1120, ticket.getPrice()); // 12% service tax applied
     }
 
+    // Ticker class receives valid information of flight and passenger
     @Test
-    @DisplayName("Ticket Status True or False")
-    void testTicketStatus() {
-        ticket.setTicketStatus(true);
-        assertTrue(ticket.ticketStatus());
-        ticket.setTicketStatus(false);
-        assertFalse(ticket.ticketStatus());
+    @DisplayName("Invalid Flight")
+    void testInvalidFlight() {
+        Exception exception = assertThrows(IllegalArgumentException.class, () -> new Ticket(1, 1000, null, false, passenger));
+        assertTrue(exception.getMessage().contains("Flight cannot be null."));
     }
+
+    @Test
+    @DisplayName("Invalid Passenger")
+    void testInvalidPassenger() {
+        Exception exception = assertThrows(IllegalArgumentException.class, () -> new Ticket(1, 1000, flight, false, null));
+        assertTrue(exception.getMessage().contains("Passenger cannot be null."));
+    }
+
+
+
+    // other tests
+    @Test
+    @DisplayName("Invalid Ticket ID")
+    void testInvalidTicketID() {
+        Exception exception = assertThrows(IllegalArgumentException.class, () -> new Ticket(0, 1000, flight, false, passenger));
+        assertTrue(exception.getMessage().contains("Ticket ID must be positive."));
+    }
+
 
     @Test
     @DisplayName("Test toString Output")

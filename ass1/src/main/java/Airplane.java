@@ -1,12 +1,12 @@
     public class Airplane
     {
-        private int airplaneID;
+        private Integer airplaneID;
         private String airplaneModel;
-        private int businessSitsNumber;
-        private int economySitsNumber;
-        private int crewSitsNumber;
+        private Integer businessSitsNumber;
+        private Integer economySitsNumber;
+        private Integer crewSitsNumber;
     
-        public Airplane(int airplaneID, String airplaneModel, int businessSitsNumber, int economySitsNumber, int crewSitsNumber)
+        public Airplane(Integer airplaneID, String airplaneModel, Integer businessSitsNumber, Integer economySitsNumber, Integer crewSitsNumber)
         {
             // ydai0035 use set functions to replace the original recording methods
             setAirplaneID(airplaneID);
@@ -20,8 +20,11 @@
         return airplaneID;
     }
 
-    public void setAirplaneID(int airplaneID) {
+    public void setAirplaneID(Integer airplaneID) {
         // ydai0035
+        if (airplaneID == null) {
+            throw new IllegalArgumentException("airplaneID cannot be null.");
+        }
         if (airplaneID > 0) {
             this.airplaneID = airplaneID;
         } else {
@@ -48,13 +51,16 @@
         return businessSitsNumber;
     }
 
-    public void setBusinessSitsNumber(int businessSitsNumber) {
+    public void setBusinessSitsNumber(Integer businessSitsNumber) {
         // ydai0035
-        if (businessSitsNumber >= 11 && businessSitsNumber <= 30) {
+        if (businessSitsNumber == null) {
+            throw new IllegalArgumentException("BusinessSitsNumber cannot be null.");
+        }
+        if (businessSitsNumber >= 0 && businessSitsNumber <= 20) {
             this.businessSitsNumber = businessSitsNumber;
         } else {
 //            System.out.println("Error: Business sits number must be between 1 and 300.");
-            throw new IllegalArgumentException("Business sits number must be between 11 and 30.");
+            throw new IllegalArgumentException("Business sits number must be between 0 and 20.");
         }
     }
 
@@ -62,13 +68,16 @@
         return economySitsNumber;
     }
 
-        public void setEconomySitsNumber(int economySitsNumber) {
+        public void setEconomySitsNumber(Integer economySitsNumber) {
             // ydai0035
-            if (economySitsNumber >= 31 && economySitsNumber <= 300) {
+            if (economySitsNumber == null) {
+                throw new IllegalArgumentException("EconomySitsNumber cannot be null.");
+            }
+            if (economySitsNumber >= 0 && economySitsNumber <= 270) {
                 this.economySitsNumber = economySitsNumber;
             } else {
 //                System.out.println("Error: Economy sits number must be between 1 and 300.");
-                throw new IllegalArgumentException("Economy sits number must be between 31 and 300.");
+                throw new IllegalArgumentException("Economy sits number must be between 0 and 270.");
             }
         }
 
@@ -76,8 +85,11 @@
         return crewSitsNumber;
     }
 
-    public void setCrewSitsNumber(int crewSitsNumber) {
+    public void setCrewSitsNumber(Integer crewSitsNumber) {
         // ydai0035
+        if (crewSitsNumber == null) {
+            throw new IllegalArgumentException("CrewSitsNumber cannot be null.");
+        }
         if (crewSitsNumber >= 1 && crewSitsNumber <= 10) {
             this.crewSitsNumber = crewSitsNumber;
         } else {

@@ -44,6 +44,7 @@ class FlightCollectionTest {
         assertEquals(2, FlightCollection.getFlights().size());
     }
 
+    // When adding a flight into the system, test if it conforms with the requirement as a flight and Flight Collection
     @Test
     @DisplayName("Add Null Flights List")
     void testAddNullFlightsList() {
@@ -51,6 +52,7 @@ class FlightCollectionTest {
         assertTrue(exception.getMessage().contains("Cannot add null list of flights."));
     }
 
+    //  Valid city names must be used
     @Test
     @DisplayName("Add Invalid Flight")
     void testAddInvalidFlight() {
@@ -61,6 +63,8 @@ class FlightCollectionTest {
         assertTrue(exception.getMessage().contains("Invalid flight data."));
     }
 
+
+    // When trying to get flight information, a valid flight is returned
     @Test
     @DisplayName("Get Flight by Cities")
     void testGetFlightByCities() {

@@ -15,6 +15,7 @@ class AirplaneTest {
         );
     }
 
+    // Ensure all fields/details for an airplane like airplaneID, businessSitsNumber, crewSitsNumber, etc. are tested
     @Test
     void testInvalidAirplaneID() {
         Exception exception = assertThrows(IllegalArgumentException.class, () -> {
@@ -32,21 +33,46 @@ class AirplaneTest {
     }
 
     @Test
-    void testInvalidSeatsNumber() {
+    void testNullSeatsNumberAndID() {
         Exception exception1 = assertThrows(IllegalArgumentException.class, () -> {
-            new Airplane(1, "Boeing 747", 10, 150, 10);
+            new Airplane(1, "Boeing 747", null, 150, 10);
         });
-        assertTrue(exception1.getMessage().contains("must be between 11 and 30"));
+        assertTrue(exception1.getMessage().contains("BusinessSitsNumber cannot be null"));
         Exception exception2 = assertThrows(IllegalArgumentException.class, () -> {
-            new Airplane(1, "Boeing 747", 15, 310, 10);
+            new Airplane(1, "Boeing 747", 15, null, 10);
         });
-        assertTrue(exception2.getMessage().contains("must be between 31 and 300"));
+        assertTrue(exception2.getMessage().contains("EconomySitsNumber cannot be null"));
         Exception exception3 = assertThrows(IllegalArgumentException.class, () -> {
-            new Airplane(1, "Boeing 747", 15, 150, 0);
+            new Airplane(1, "Boeing 747", 15, 270, null);
         });
-        assertTrue(exception3.getMessage().contains("must be between 1 and 10"));
+        assertTrue(exception3.getMessage().contains("cannot be null"));
+        Exception exception4 = assertThrows(IllegalArgumentException.class, () -> {
+            new Airplane(null, "Boeing 747", 15, 150, 15);
+        });
+        assertTrue(exception4.getMessage().contains("airplaneID cannot be null"));
     }
 
+    // Ensure all fields/details for an airplane like airplaneID, businessSitsNumber, crewSitsNumber, etc. are tested
+    // Seat number must be in the range [1, 300]
+    // 0-20 for Business sits, 0-10 for crew sits, 0-270 for economy sits
+    @Test
+    void testInvalidSeatsNumber() {
+        Exception exception2 = assertThrows(IllegalArgumentException.class, () -> {
+            new Airplane(1, "Boeing 747", 25, 150, 10);
+        });
+        assertTrue(exception2.getMessage().contains("must be between 0 and 20"));
+        Exception exception3 = assertThrows(IllegalArgumentException.class, () -> {
+            new Airplane(1, "Boeing 747", 15, 310, 10);
+        });
+        assertTrue(exception3.getMessage().contains("must be between 0 and 270"));
+        Exception exception4 = assertThrows(IllegalArgumentException.class, () -> {
+            new Airplane(1, "Boeing 747", 15, 150, 15);
+        });
+        assertTrue(exception4.getMessage().contains("must be between 1 and 10"));
+    }
+
+
+    //other tests
     @Test
     void testToStringMethod() {
         Airplane airplane = new Airplane(1, "Boeing 747", 12, 150, 10);

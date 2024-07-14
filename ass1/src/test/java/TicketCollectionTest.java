@@ -34,6 +34,7 @@ class TicketCollectionTest {
         assertEquals(2, TicketCollection.getTickets().size(), "Should have 2 tickets in the collection.");
     }
 
+    // Whenever a ticket is being added to the TicketCollection, it must be validated
     @Test
     @DisplayName("Reject adding null list of tickets")
     void testAddNullTickets() {
@@ -42,6 +43,7 @@ class TicketCollectionTest {
     }
 
 
+    // When trying to get a ticket, the correct ticket is returned
     @Test
     @DisplayName("Retrieve a valid ticket by ID")
     void testGetValidTicketById() {

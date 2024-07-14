@@ -6,7 +6,7 @@ import java.util.Calendar;
 import java.util.Date;
 
 public class Flight {
-    private int flightID;
+    private Integer flightID;
     private String departTo;
     private String departFrom;
     private String code;
@@ -17,7 +17,7 @@ public class Flight {
 
 //    public Flight(){}
 
-    public Flight(int flight_id, String departTo, String departFrom, String code, String company, Timestamp dateFrom,Timestamp dateTo, Airplane airplane)
+    public Flight(Integer flight_id, String departTo, String departFrom, String code, String company, Timestamp dateFrom,Timestamp dateTo, Airplane airplane)
     {
         setFlightID(flight_id);
         setDepartTo(departTo);
@@ -34,7 +34,10 @@ public class Flight {
         return flightID;
     }
 
-    public void setFlightID(int flightid) {
+    public void setFlightID(Integer flightid) {
+        if (flightid == null) {
+            throw new IllegalArgumentException("Flight id cannot be null.");
+        }
         // ydai0035 validate flightID larger than 0
         if (flightid > 0) {
             this.flightID = flightid;

@@ -4,15 +4,14 @@ public class Person //abstract class Person
 {
     private String firstName;
     private String secondName;
-    private int age;
+    private Integer age;
     private String gender;
 
     // ydai 0035 sets used to check gender
     private static final Set<String> validGenders = Set.of("Woman", "Man", "Non-binary | gender diverse", "Prefer not to say", "Other");
 
-//    public Person(){}
-
-    public Person(String firstName, String secondName, int age, String gender){
+    //    public Person(){}
+    public Person(String firstName, String secondName, Integer age, String gender){
         // ydai0035 use set functions to replace the original recording methods
         setFirstName(firstName);
         setSecondName(secondName);
@@ -24,13 +23,17 @@ public class Person //abstract class Person
         return age;
     }
 
-    public void setAge(int age) {
-        if (age >= 0 && age <= 150) {  // 假定150岁为合理的最大年龄
+    public void setAge(Integer age) {
+        if (age == null) {
+            throw new IllegalArgumentException("Age cannot be null.");
+        }
+        if ( age >= 0 && age <= 150 ) {  // 假定150岁为合理的最大年龄
             this.age = age;
         } else {
             throw new IllegalArgumentException("Age must be between 0 and 150.");
         }
     }
+
 
     public String getGender() {
         return gender;

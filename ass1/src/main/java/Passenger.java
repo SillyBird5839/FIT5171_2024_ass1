@@ -5,7 +5,7 @@ public class Passenger extends Person
     private String email;
     private String phoneNumber;
     private String cardNumber;
-    private int securityCode;
+    private Integer securityCode;
     private String passport;
 
     // ydai0035 patterns used to check the information
@@ -15,7 +15,7 @@ public class Passenger extends Person
 
 //    public Passenger(){}
 
-    public Passenger(String firstName, String secondName, int age, String gender, String email, String phoneNumber, String passport, String cardNumber,int securityCode)
+    public Passenger(String firstName, String secondName, Integer age, String gender, String email, String phoneNumber, String passport, String cardNumber,Integer securityCode)
     {
         // ydai0035 use set functions to replace the original recording methods
         super(firstName, secondName, age, gender);
@@ -56,6 +56,9 @@ public class Passenger extends Person
     }
 
     public void setCardNumber(String cardNumber) {
+        if (cardNumber == null){
+            throw new IllegalArgumentException("Card number cannot be null.");
+        }
         // ydai0035 validate credit card number
         if (isValidCreditCard(cardNumber)) {
             this.cardNumber = cardNumber;
@@ -81,7 +84,10 @@ public class Passenger extends Person
         return sum % 10 == 0;
     }
 
-    public void setSecurityCode(int securityCode) {
+    public void setSecurityCode(Integer securityCode) {
+        if (securityCode == null) {
+            throw new IllegalArgumentException("securityCode cannot be null.");
+        }
         // ydai0035 validate the security code
         if (String.valueOf(securityCode).matches("\\d{3,4}")) {
             this.securityCode = securityCode;
