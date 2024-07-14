@@ -8,7 +8,7 @@ public class Passenger extends Person
     private Integer securityCode;
     private String passport;
 
-    // ydai0035 patterns used to check the information
+    // hwan0262 patterns used to check the information
     private static final Pattern EMAIL_PATTERN = Pattern.compile("^[a-zA-Z0-9_+&*-]+(?:\\.[a-zA-Z0-9_+&*-]+)*@(?:[a-zA-Z0-9-]+\\.)+[a-zA-Z]{2,7}$");
     private static final Pattern PHONE_PATTERN = Pattern.compile("^(04|05)\\d{8}$|^\\+614\\d{8}$");
     private static final Pattern PASSPORT_PATTERN = Pattern.compile("^\\w{1,9}$");
@@ -17,7 +17,7 @@ public class Passenger extends Person
 
     public Passenger(String firstName, String secondName, Integer age, String gender, String email, String phoneNumber, String passport, String cardNumber,Integer securityCode)
     {
-        // ydai0035 use set functions to replace the original recording methods
+        // hwan0262 use set functions to replace the original recording methods
         super(firstName, secondName, age, gender);
         setEmail(email);
         setPhoneNumber(phoneNumber);
@@ -47,7 +47,7 @@ public class Passenger extends Person
     }
 
     public void setEmail(String email) {
-        // ydai0035 check if email is valid
+        // hwan0262 check if email is valid
         if (EMAIL_PATTERN.matcher(email).matches()) {
             this.email = email;
         } else {
@@ -59,7 +59,7 @@ public class Passenger extends Person
         if (cardNumber == null){
             throw new IllegalArgumentException("Card number cannot be null.");
         }
-        // ydai0035 validate credit card number
+        // hwan0262 validate credit card number
         if (isValidCreditCard(cardNumber)) {
             this.cardNumber = cardNumber;
         } else {
@@ -67,7 +67,7 @@ public class Passenger extends Person
         }
     }
 
-    // ydai0035 function to validate credit card number
+    // hwan0262 function to validate credit card number
     private boolean isValidCreditCard(String number) {
         int[] digits = new int[number.length()];
         for (int i = 0; i < number.length(); i++) {
@@ -88,7 +88,7 @@ public class Passenger extends Person
         if (securityCode == null) {
             throw new IllegalArgumentException("securityCode cannot be null.");
         }
-        // ydai0035 validate the security code
+        // hwan0262 validate the security code
         if (String.valueOf(securityCode).matches("\\d{3,4}")) {
             this.securityCode = securityCode;
         } else {
@@ -99,7 +99,7 @@ public class Passenger extends Person
 
 
     public void setPassport(String passport) {
-        // ydai0035
+        // hwan0262
         if (PASSPORT_PATTERN.matcher(passport).matches()) {
             this.passport = passport;
         } else {
@@ -108,7 +108,7 @@ public class Passenger extends Person
     }
 
     public void setPhoneNumber(String phoneNumber) {
-        // ydai0035
+        // hwan0262
         if (PHONE_PATTERN.matcher(phoneNumber).matches()) {
             this.phoneNumber = phoneNumber;
         } else {
@@ -120,7 +120,7 @@ public class Passenger extends Person
     @Override
     public String toString()
     {
-        // ydai0035 change the form of output and the methods to get the information
+        // hwan0262 change the form of output and the methods to get the information
         return "Passenger{" + " Fullname= "+ super.getFirstName()+" "+super.getSecondName()+
                 ", email='" + getEmail() +  "'"  +
                 ", phoneNumber='" + getPhoneNumber() +  "'"  +
