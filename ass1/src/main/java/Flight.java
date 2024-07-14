@@ -38,7 +38,7 @@ public class Flight {
         if (flightid == null) {
             throw new IllegalArgumentException("Flight id cannot be null.");
         }
-        // ydai0035 validate flightID larger than 0
+        // xwan0395 validate flightID larger than 0
         if (flightid > 0) {
             this.flightID = flightid;
         } else {
@@ -51,7 +51,7 @@ public class Flight {
     }
 
     public void setDepartTo(String departTo) {
-        // ydai0035 validate DepartTo not empty
+        // xwan0395 validate DepartTo not empty
         if (departTo != null && !departTo.trim().isEmpty()) {
             this.departTo = departTo;
         } else {
@@ -64,7 +64,7 @@ public class Flight {
     }
 
     public void setDepartFrom(String departFrom) {
-        // ydai0035 validate DepartFrom not empty
+        // xwan0395 validate DepartFrom not empty
         if (departFrom != null && !departFrom.trim().isEmpty()) {
             this.departFrom = departFrom;
         } else {
@@ -77,7 +77,7 @@ public class Flight {
     }
 
     public void setCode(String code) {
-        // ydai0035 validate Code not empty
+        // xwan0395 validate Code not empty
         if (code != null && !code.trim().isEmpty()) {
             this.code = code;
         } else {
@@ -90,7 +90,7 @@ public class Flight {
     }
 
     public void setCompany(String company) {
-        // ydai0035 validate company not empty
+        // xwan0395 validate company not empty
         if (company != null && !company.trim().isEmpty()) {
             this.company = company;
         } else {
