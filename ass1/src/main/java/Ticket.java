@@ -1,14 +1,14 @@
 public class Ticket
 {
     private int ticket_id;
-    private int price;
+    private Integer price;
     Flight flight;
     private boolean classVip; //indicates if this is bussiness class ticket or not
     private boolean status; //indicates status of ticket: if it is bought by someone or not
     Passenger passenger;
 
 
-    public Ticket(int ticket_id,int price, Flight flight, boolean classVip, Passenger passenger)
+    public Ticket(int ticket_id,Integer price, Flight flight, boolean classVip, Passenger passenger)
     {
         setTicket_id(ticket_id);
         setFlight(flight);
@@ -33,8 +33,11 @@ public class Ticket
 
     public int getPrice() { return price; }
 
-    public void setPrice(int price)
+    public void setPrice(Integer price)
     {
+        if (price == null){
+            throw new IllegalArgumentException("Price cannot be null.");
+        }
         if (price <= 0) {
             throw new IllegalArgumentException("Price must be positive.");
         }

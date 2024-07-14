@@ -86,7 +86,7 @@ public class TicketSystemTest {
         assertEquals(false, ticket1.ticketStatus(), "Ticket should not be booked for non-existent cities.");
     }
 
-
+    
     // If a passenger chooses an already booked ticket it should display an error message.
     @Test
     @DisplayName("Test booking an already booked ticket")
@@ -100,17 +100,63 @@ public class TicketSystemTest {
         assertEquals(true, ticket1.ticketStatus(), "Ticket status should remain booked.");
     }
 
+    // Appropriate checks have been implemented to validate passenger information
+    @Test
+    @DisplayName("Test invalid passenger information handling")
+    void testInvalidPassengerInformation() {
+        // Specific input simulating invalid age input followed by cancellation of booking
+        String input = "1\nJohn\nDoe\ninvalidAge\n"; // 'invalidAge' should trigger the validation error
+        System.setIn(new ByteArrayInputStream(input.getBytes()));
+        ticketSystem = new TicketSystem(new Scanner(System.in));
+
+        final ByteArrayOutputStream outContent = new ByteArrayOutputStream();
+        System.setOut(new PrintStream(outContent)); // Redirect system out to capture output for verification
+
+        ticketSystem.chooseTicket("New York", "London"); // Try to buy ticket for an existing flight
+
+        String output = outContent.toString();
+        assertTrue(output.contains("Ticket booking cancelled."), "Booking should be cancelled on invalid input.");
+        assertFalse(ticket1.ticketStatus(), "Ticket should not be marked as booked after invalid input.");
+    }
+
+    // Appropriate checks have been implemented to validate flight information
+    @Test
+    @DisplayName("Test invalid flight number")
+    void testInvalidFlightNumber() {
+        String input = "999\n";
+        System.setIn(new ByteArrayInputStream(input.getBytes()));
+        ticketSystem = new TicketSystem(new Scanner(System.in));
+
+        ticketSystem.chooseTicket("New York", "London"); // 假设999是一个无效的航班号
+        assertFalse(ticket1.ticketStatus(), "Invalid flight number should not change ticket status.");
+    }
+
 
     // Appropriate checks have been implemented to validate ticket information
     @Test
     @DisplayName("Test invalid ticket information")
-    void testInvalidFlightInformation() {
+    void testInvalidTicketInformation() {
         String input = "999\n"; // Assuming 999 is an invalid ticket ID
         System.setIn(new ByteArrayInputStream(input.getBytes()));
         ticketSystem = new TicketSystem(new Scanner(System.in));
 
         ticketSystem.buyTicket(999);
         assertEquals(false, ticket1.ticketStatus(), "Invalid ticket should not change ticket status.");
+    }
+
+
+    @Test
+    @DisplayName("Display correct ticket details on successful booking")
+    void displayCorrectTicketDetailsOnSuccessfulBooking() {
+        // 测试正确显示购票后的详细信息
+        String input = "1\nJohn\nDoe\n25\nMan\njohn.doe@example.com\n0412345678\nA1234567\n4485364739527352\n123\nYES\n";
+        System.setIn(new ByteArrayInputStream(input.getBytes()));
+        ticketSystem = new TicketSystem(new Scanner(System.in));
+
+        ticketSystem.chooseTicket("New York", "London");
+        ticketSystem.showTicket(ticket1);
+        String expectedTicketDetails = "Ticket{\nPrice=1120KZT, \nFlight{airplane=Airplane{model='Boeing 747', business sits=20, economy sits=149, crew sits=10}, date to='2023-07-12 15:00:00.0', date from='2023-07-12 12:00:00.0', depart from='London', depart to='New York', code='BA100', company='British Airways'}\nVip status=false\nPassenger{ Fullname= John Doe, email='john.doe@example.com', phoneNumber='0412345678', passport='A1234567'}\nTicket was purchased=true\n}";
+        assertEquals(expectedTicketDetails, ticket1.toString(), "Ticket details should match the expected format and content.");
     }
 
 
@@ -136,40 +182,6 @@ public class TicketSystemTest {
 
         ticketSystem.chooseTicket("New York", "London");
         assertEquals(1120, ticket1.getPrice(), "Ticket price should be displayed correctly.");
-    }
-
-    // Appropriate checks have been implemented to validate ticket information
-    @Test
-    @DisplayName("Display correct ticket details on successful booking")
-    void displayCorrectTicketDetailsOnSuccessfulBooking() {
-        // 测试正确显示购票后的详细信息
-        String input = "1\nJohn\nDoe\n25\nMan\njohn.doe@example.com\n0412345678\nA1234567\n4485364739527352\n123\nYES\n";
-        System.setIn(new ByteArrayInputStream(input.getBytes()));
-        ticketSystem = new TicketSystem(new Scanner(System.in));
-
-        ticketSystem.chooseTicket("New York", "London");
-        ticketSystem.showTicket(ticket1);
-        String expectedTicketDetails = "Ticket{\nPrice=1120KZT, \nFlight{airplane=Airplane{model='Boeing 747', business sits=20, economy sits=149, crew sits=10}, date to='2023-07-12 15:00:00.0', date from='2023-07-12 12:00:00.0', depart from='London', depart to='New York', code='BA100', company='British Airways'}\nVip status=false\nPassenger{ Fullname= John Doe, email='john.doe@example.com', phoneNumber='0412345678', passport='A1234567'}\nTicket was purchased=true\n}";
-        assertEquals(expectedTicketDetails, ticket1.toString(), "Ticket details should match the expected format and content.");
-    }
-
-    // Appropriate checks have been implemented to validate passenger information
-    @Test
-    @DisplayName("Test invalid passenger information handling")
-    void testInvalidPassengerInformation() {
-        // Specific input simulating invalid age input followed by cancellation of booking
-        String input = "1\nJohn\nDoe\ninvalidAge\n"; // 'invalidAge' should trigger the validation error
-        System.setIn(new ByteArrayInputStream(input.getBytes()));
-        ticketSystem = new TicketSystem(new Scanner(System.in));
-
-        final ByteArrayOutputStream outContent = new ByteArrayOutputStream();
-        System.setOut(new PrintStream(outContent)); // Redirect system out to capture output for verification
-
-        ticketSystem.chooseTicket("New York", "London"); // Try to buy ticket for an existing flight
-
-        String output = outContent.toString();
-        assertTrue(output.contains("Ticket booking cancelled."), "Booking should be cancelled on invalid input.");
-        assertFalse(ticket1.ticketStatus(), "Ticket should not be marked as booked after invalid input.");
     }
 
 }

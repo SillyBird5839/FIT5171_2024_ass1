@@ -14,20 +14,27 @@ class PersonTest {
         );
     }
 
+    // All fields of a Person class are required to create a person
     @Test
-    void testInvalidAge() {
-        Exception exception1 = assertThrows(IllegalArgumentException.class, () -> new Person("John", "Doe", -1, "Man"));
-        assertTrue(exception1.getMessage().contains("Age must be between 0 and 150"));
-        Exception exception2 = assertThrows(IllegalArgumentException.class, () -> new Person("John", "Doe", 151, "Man"));
-        assertTrue(exception2.getMessage().contains("Age must be between 0 and 150"));
+    void testNullInput() {
+        Exception exception0 = assertThrows(IllegalArgumentException.class, () -> new Person("John", "Doe", null, "Man"));
+        assertTrue(exception0.getMessage().contains("Age cannot be null"));
+        Exception exception1 = assertThrows(IllegalArgumentException.class, () -> new Person("John", "Doe", 30, ""));
+        assertTrue(exception1.getMessage().contains("Invalid gender provided"));
+        Exception exception2 = assertThrows(IllegalArgumentException.class, () -> new Person("", "Doe", 30, "Man"));
+        assertTrue(exception2.getMessage().contains("First name must start with a letter"));
+        Exception exception3 = assertThrows(IllegalArgumentException.class, () -> new Person("John", "", 30, "Man"));
+        assertTrue(exception3.getMessage().contains("Second name must start with a letter"));
     }
 
+    // The gender field has following options ‘Woman’, ‘Man’, ’Non-binary | gender diverse’, ‘Prefer not to say’ and ‘Other'
     @Test
     void testInvalidGender() {
         Exception exception = assertThrows(IllegalArgumentException.class, () -> new Person("John", "Doe", 30, "Alien"));
         assertTrue(exception.getMessage().contains("Invalid gender provided"));
     }
 
+    //  The first name and last name should not start with a number or symbol and can contain only lower-case and upper-case alphabet letters
     @Test
     void testInvalidFirstName() {
         Exception exception = assertThrows(IllegalArgumentException.class, () -> new Person("1John", "Doe", 30, "Man"));
@@ -40,10 +47,19 @@ class PersonTest {
         assertTrue(exception.getMessage().contains("Second name must start with a letter"));
     }
 
+
     @Test
     void testToStringOutput() {
         Person person = new Person("John", "Doe", 30, "Man");
         String expectedOutput = "Person{firstName='John', secondName='Doe', age=30, gender='Man'}";
         assertEquals(expectedOutput, person.toString());
+    }
+
+    @Test
+    void testInvalidAge() {
+        Exception exception1 = assertThrows(IllegalArgumentException.class, () -> new Person("John", "Doe", -1, "Man"));
+        assertTrue(exception1.getMessage().contains("Age must be between 0 and 150"));
+        Exception exception2 = assertThrows(IllegalArgumentException.class, () -> new Person("John", "Doe", 151, "Man"));
+        assertTrue(exception2.getMessage().contains("Age must be between 0 and 150"));
     }
 }
