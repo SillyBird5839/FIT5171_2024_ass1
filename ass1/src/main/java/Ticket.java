@@ -7,7 +7,7 @@ public class Ticket
     private boolean status; //indicates status of ticket: if it is bought by someone or not
     Passenger passenger;
 
-    // ydai0035 extende code for the requirements
+    // ydai0035 extend code for the requirements
     public Ticket(int ticket_id,Integer price, Flight flight, boolean classVip, Passenger passenger)
     {
         setTicket_id(ticket_id);
