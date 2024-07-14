@@ -2,8 +2,9 @@ import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Set;
 
-public class FlightCollection {
 
+public class FlightCollection {
+// xwan0395
     public static ArrayList<Flight> flights = new ArrayList<>();
     private static final Set<String> VALID_CITIES = new HashSet<>();
 
