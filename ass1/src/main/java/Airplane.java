@@ -8,7 +8,7 @@
     
         public Airplane(Integer airplaneID, String airplaneModel, Integer businessSitsNumber, Integer economySitsNumber, Integer crewSitsNumber)
         {
-            // ydai0035 use set functions to replace the original recording methods
+            // hwan0262 use set functions to replace the original recording methods
             setAirplaneID(airplaneID);
             setAirplaneModel(airplaneModel);
             setBusinessSitsNumber(businessSitsNumber);
@@ -21,7 +21,7 @@
     }
 
     public void setAirplaneID(Integer airplaneID) {
-        // ydai0035
+        // hwan0262
         if (airplaneID == null) {
             throw new IllegalArgumentException("airplaneID cannot be null.");
         }
@@ -38,7 +38,7 @@
     }
 
     public void setAirplaneModel(String airplaneModel) {
-        // ydai0035
+        // hwan0262
         if (airplaneModel != null && !airplaneModel.isEmpty()) {
             this.airplaneModel = airplaneModel;
         } else {
@@ -52,7 +52,7 @@
     }
 
     public void setBusinessSitsNumber(Integer businessSitsNumber) {
-        // ydai0035
+        // hwan0262
         if (businessSitsNumber == null) {
             throw new IllegalArgumentException("BusinessSitsNumber cannot be null.");
         }
@@ -69,7 +69,7 @@
     }
 
         public void setEconomySitsNumber(Integer economySitsNumber) {
-            // ydai0035
+            // hwan0262
             if (economySitsNumber == null) {
                 throw new IllegalArgumentException("EconomySitsNumber cannot be null.");
             }
@@ -86,7 +86,7 @@
     }
 
     public void setCrewSitsNumber(Integer crewSitsNumber) {
-        // ydai0035
+        // hwan0262
         if (crewSitsNumber == null) {
             throw new IllegalArgumentException("CrewSitsNumber cannot be null.");
         }
@@ -99,7 +99,7 @@
     }
 
     public String toString() {
-        // ydai0035 change the form of output and the methods to get the information
+        // hwan0262 change the form of output and the methods to get the information
             return "Airplane{" +
                     "model='" + getAirplaneModel() + "', " +
                     "business sits=" + getBusinessSitsNumber() + ", " +
