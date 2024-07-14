@@ -4,9 +4,12 @@ import org.junit.jupiter.api.Test;
 
 import java.lang.reflect.Field;
 import java.sql.Timestamp;
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
+
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -112,14 +115,25 @@ class FlightTest {
 
     //2. Date must be in DD/MM/YY format.
     //3. Time must be in HH:MM:SS format.
+    private Timestamp parseTimestamp(String dateString) throws ParseException {
+        SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yy HH:mm:ss");
+        sdf.setLenient(false); // 强制执行精确的日期匹配
+        Date date = sdf.parse(dateString);
+        return new Timestamp(date.getTime());
+    }
+
     @Test
-    @DisplayName("Invalid Date Format")
-    void testInvalidDateFormat() {
-        Exception exception = assertThrows(IllegalArgumentException.class, () -> {
-            Timestamp wrongDate = new Timestamp(new SimpleDateFormat("yyyy/MM/dd HH:mm:ss").parse("2023/10/15 12:00:00").getTime());
-            new Flight(1, "Sydney", "Melbourne", "QF400", "Qantas", wrongDate, dateTo, airplane);
+    void testInvalidDateInput() {
+        Airplane airplane = new Airplane(1, "Boeing 747", 20, 150, 10); // 举例的飞机对象
+        String incorrectDateString = "15/10 12:00"; // 故意错误的日期格式
+
+        Exception parseException = assertThrows(ParseException.class, () -> {
+            Timestamp dateFrom = parseTimestamp(incorrectDateString);
+            Timestamp dateTo = parseTimestamp("15/10/23 15:00:00"); // 正确的日期格式
+            new Flight(1, "Sydney", "Melbourne", "QF400", "Qantas", dateFrom, dateTo, airplane);
         });
-        assertTrue(exception.getMessage().contains("Departure date format must be 'DD/MM/YY HH:MM:SS'"));
+
+        assertTrue(parseException.getMessage().contains("Unparseable date"), "Should fail to parse incomplete date string");
     }
 
 

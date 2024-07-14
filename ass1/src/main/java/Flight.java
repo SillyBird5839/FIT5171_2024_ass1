@@ -98,6 +98,7 @@ public class Flight {
         }
     }
 
+
     public Timestamp getDateFrom() {
         return dateFrom;
     }
